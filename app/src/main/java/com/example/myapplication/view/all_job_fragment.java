@@ -25,14 +25,12 @@ public class all_job_fragment extends Fragment {
 
     }
 
-//    public static all_job_fragment newInstance(String param1, String param2) {
-//        all_job_fragment fragment = new all_job_fragment();
-//        Bundle args = new Bundle();
-//        args.putString(ARG_PARAM1, param1);
-//        args.putString(ARG_PARAM2, param2);
-//        fragment.setArguments(args);
-//        return fragment;
-//    }
+    public static all_job_fragment newInstance(String param1, String param2) {
+        all_job_fragment fragment = new all_job_fragment();
+        Bundle args = new Bundle();
+        fragment.setArguments(args);
+        return fragment;
+    }
 
 
 
@@ -43,6 +41,6 @@ public class all_job_fragment extends Fragment {
         binding = FragmentAllJobBinding.inflate(inflater, container, false);
         binding.recyclerView.setLayoutManager(new LinearLayoutManager(inflater.getContext(), LinearLayoutManager.VERTICAL, false));
         binding.recyclerView.setAdapter(new MainActivityRecycleViewAdapter());
-        return inflater.inflate(R.layout.fragment_all_job, container, false);
+        return binding.getRoot();
     }
 }

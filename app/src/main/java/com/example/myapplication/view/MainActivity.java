@@ -10,6 +10,8 @@ import androidx.navigation.NavController;
 import androidx.navigation.NavHostController;
 import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
+import androidx.navigation.ui.AppBarConfiguration;
+import androidx.navigation.ui.NavigationUI;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -31,15 +33,17 @@ public class MainActivity extends AppCompatActivity {
     public enum PAGE {
         HOME_PAGE,
         ALL_JOB,
-        ACCOUNT
+        COMPANY
     }
     public  PAGE currentPage = PAGE.HOME_PAGE;
+
     private ActivityMainBinding mainBinding;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         mainBinding = ActivityMainBinding.inflate(getLayoutInflater());
+
 
         setCallBackButton();
         mainBinding.menuBtn.setOnClickListener(new View.OnClickListener() {
@@ -48,7 +52,37 @@ public class MainActivity extends AppCompatActivity {
                 mainBinding.drawLayout.openDrawer(mainBinding.navView);
             }
         });
-        setMainView();
+
+        mainBinding.navView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                int id = item.getItemId();
+                if (id == R.id.nav_home) {
+                    if (currentPage != PAGE.HOME_PAGE) {
+                        replaceFragment(new HomeFragment());
+                        currentPage = PAGE.HOME_PAGE;
+                    }
+                    return true;
+                }
+                if (id == R.id.nav_job) {
+                    if (currentPage != PAGE.ALL_JOB) {
+                        replaceFragment(new all_job_fragment());
+                        currentPage = PAGE.ALL_JOB;
+                    }
+                    return true;
+                }
+                if (id == R.id.nav_companies) {
+//                    if (currentPage != PAGE.HOME_PAGE) {
+//                        replaceFragment(new HomeFragment());
+//                    }
+//                    return true;
+
+                }
+                return false;
+            }
+
+        });
+
         setContentView(mainBinding.getRoot());
     }
 
@@ -68,33 +102,15 @@ public class MainActivity extends AppCompatActivity {
         this.getOnBackPressedDispatcher().addCallback(this,callback);
     }
 
+    public void replaceFragment(Fragment fragment) {
+        FragmentTransaction fragmentTransaction = this.getSupportFragmentManager().beginTransaction();
+        fragmentTransaction.replace(mainBinding.fragmentContainerView5.getId(),fragment);
+        fragmentTransaction.commit();
+    }
 
-    public void setMainView() {
-        CompanyAdapter adapter = new CompanyAdapter(putData(), mainBinding.companyViewPager);
-        MainActivityRecycleViewAdapter rvAdapter = new MainActivityRecycleViewAdapter();
-        LinearLayoutManager layoutManager = new LinearLayoutManager(this, RecyclerView.VERTICAL, false);
-        LinearLayoutManager layoutManager2 = new LinearLayoutManager(this, RecyclerView.VERTICAL, false);
-        LinearLayoutManager horionzalRvManager = new LinearLayoutManager(this, RecyclerView.HORIZONTAL, false);
-        mainBinding.companyViewPager.setAdapter(adapter);
-        mainBinding.horizontalRecyclerview.setLayoutManager(horionzalRvManager);
-        mainBinding.horizontalRecyclerview.setAdapter(rvAdapter);
-        mainBinding.recyclerView.setLayoutManager(layoutManager);
-        mainBinding.recyclerView.setAdapter(rvAdapter);
-        mainBinding.latestJobRecyclerview.setLayoutManager(layoutManager2);
-        mainBinding.latestJobRecyclerview.setAdapter(rvAdapter);
-    }
-    public List<company> putData() {
-        company a = new company(R.drawable.microsoft_logo,R.drawable.microsoft_image, "Microsoft", R.string.microsoft_intro, "null");
-        List<company> listCompany = new ArrayList<>();
-        listCompany.add(a);
-        a = new company(R.drawable.topdev_logo,R.drawable.topdev_image, "Top Dev", R.string.topdev_intro, "null");
-        listCompany.add(a);
-        a = new company(R.drawable.viettel_logo,R.drawable.viettel_image, "Viettel", R.string.viettel_intro, "null");
-        listCompany.add(a);
-        a = new company(R.drawable.pb_image,R.drawable.pb_logo, "Public bank", R.string.pb_intro, "null");
-        listCompany.add(a);
-        return listCompany;
-    }
+
+
+
 
 
 }

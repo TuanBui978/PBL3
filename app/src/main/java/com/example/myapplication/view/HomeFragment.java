@@ -42,7 +42,7 @@ public class HomeFragment extends Fragment {
                              Bundle savedInstanceState) {
         binding = FragmentHomeBinding.inflate(inflater, container, false);
         setMainView();
-        return inflater.inflate(R.layout.fragment_home, container, false);
+        return binding.getRoot();
     }
     public List<company> putData() {
         company a = new company(R.drawable.microsoft_logo,R.drawable.microsoft_image, "Microsoft", R.string.microsoft_intro, "null");
