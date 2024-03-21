@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    android:id="@+id/login_fragment"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".view.login">
+
+    <LinearLayout
+        android:id="@+id/login_text_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="120dp"
+
+        >
+
+        <TextView
+            android:id="@+id/loginText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Login"
+            android:textSize="50sp"
+            android:fontFamily="@font/inido_daisy"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Let's join us and \n build your relationship with orthers"
+            android:fontFamily="@font/roboto_regular"
+            app:layout_constraintTop_toBottomOf="@+id/loginText"
+            android:layout_marginTop="12dp"
+            android:layout_marginBottom="50dp"
+            android:textSize="17sp"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/login_text_layout"
+        android:paddingStart="20dp"
+        android:paddingEnd="20dp"
+        android:orientation="vertical"
+        android:layout_centerInParent="true"
+        >
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:hint="Email"
+            android:fontFamily="@font/roboto_regular"
+            android:inputType="textEmailAddress"
+            android:autofillHints="emailAddress"
+            android:textSize="15sp"
+            android:padding="10dp"
+            android:background="@drawable/custom_edit_text"
+            android:layout_marginBottom="15dp"
+
+
+            />
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:hint="Password"
+            android:fontFamily="@font/roboto_regular"
+            android:inputType="textPassword"
+            android:autofillHints="emailAddress"
+            android:textSize="15sp"
+            android:padding="15dp"
+            android:background="@drawable/custom_edit_text"
+            />
+        <Button
+            android:id="@+id/login_Btn"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:fontFamily="@font/roboto_regular"
+            android:text="Login"
+            android:textAlignment="center"
+            android:layout_marginTop="15dp"
+            app:backgroundTint="@null"
+            android:background="@drawable/custom_btn"
+            />
+
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/rightArrow"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:src="@drawable/ic_arrow_right"
+        android:layout_centerHorizontal="true"
+        android:layout_above="@id/swapText"/>
+
+    <TextView
+        android:id="@+id/swapText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Swipe right to register"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+
+        android:fontFamily="@font/roboto_regular"
+        android:textSize="15sp"
+        android:layout_marginBottom="15dp"/>
+
+
+
+</RelativeLayout>
