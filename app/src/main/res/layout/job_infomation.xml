@@ -3,13 +3,14 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     app:cardCornerRadius="8dp"
     android:layout_marginBottom="15dp"
     android:foreground="@drawable/job_view_conner"
     android:layout_margin="10dp">
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:padding="10dp">
@@ -28,6 +29,7 @@
                 />
 
             <TextView
+                android:id="@+id/company_name"
                 android:layout_width="match_parent"
                 android:layout_height="30dp"
                 android:layout_centerInParent="true"
@@ -38,7 +40,7 @@
         </RelativeLayout>
         <TextView
             android:id="@+id/job_name"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fontFamily="@font/roboto_regular"
             android:text="Head of Devolopment, IT Department, head Office"

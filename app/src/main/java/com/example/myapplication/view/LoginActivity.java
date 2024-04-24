@@ -23,8 +23,10 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.login_activity);
         ViewPager2 viewPager2 = findViewById(R.id.pager);
         listFragment = new ArrayList<>();
-        listFragment.add(new login());
-        listFragment.add(new register());
+        listFragment.add(new LoginFragment());
+        RegisterFragment registerFragment = new RegisterFragment();
+        registerFragment.setViewPager(viewPager2);
+        listFragment.add(registerFragment);
         FragmentStateAdapter pagerAdapter = new ScreenSlidePagerAdapter(this, listFragment);
         viewPager2.setAdapter(pagerAdapter);
     }

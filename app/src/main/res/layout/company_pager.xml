@@ -18,7 +18,7 @@
                 android:id="@+id/company_image"
                 android:layout_width="match_parent"
                 android:layout_height="220dp"
-                android:src="@drawable/topdev_image"
+                android:src="@drawable/company_image"
                 android:scaleType="centerCrop"
                 />
             <ImageView

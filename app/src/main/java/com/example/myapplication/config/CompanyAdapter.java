@@ -12,17 +12,24 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.example.myapplication.R;
-import com.example.myapplication.models.company;
+import com.example.myapplication.models.Company;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
+import kotlinx.coroutines.Job;
+
 public class CompanyAdapter extends RecyclerView.Adapter<CompanyAdapter.companyViewHolder> {
-    List<company> companyList;
+    List<Company> companyList;
+
     ViewPager2 viewPager2;
 
-    public CompanyAdapter(List<company> companyList, ViewPager2 viewPager2) {
+    JobAdapter.OnRecycleViewClickListener onRecycleViewClickListener;
+
+    public CompanyAdapter(List<Company> companyList, ViewPager2 viewPager2, JobAdapter.OnRecycleViewClickListener onRecycleViewClickListener) {
         this.companyList = companyList;
         this.viewPager2 = viewPager2;
+        this.onRecycleViewClickListener = onRecycleViewClickListener;
     }
 
     @NonNull
@@ -35,14 +42,15 @@ public class CompanyAdapter extends RecyclerView.Adapter<CompanyAdapter.companyV
     @Override
         public void onBindViewHolder(@NonNull companyViewHolder holder, int position) {
             if (!companyList.isEmpty()) {
-                holder.logoView.setImageResource(companyList.get(position).getCompanyLogo());
-                holder.imageView.setImageResource(companyList.get(position).getCompanyImage());
-                holder.infomation.setText(companyList.get(position).getInfomation());
-                holder.name.setText(companyList.get(position).getName());
+                Company company = companyList.get(position);
+                holder.name.setText(company.getCompanyName());
+                holder.infomation.setText(company.getCompanyDescription());
+                Picasso.get().load(company.getCompanyLogo()).resize(2048,1600).onlyScaleDown().into(holder.logoView);
             }
             else {
                 Log.d("check", "EMPTY");
             }
+
         }
 
     @Override
@@ -50,7 +58,7 @@ public class CompanyAdapter extends RecyclerView.Adapter<CompanyAdapter.companyV
         return companyList.size();
     }
 
-    public class companyViewHolder extends RecyclerView.ViewHolder {
+    public class companyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         ImageView logoView;
         ImageView imageView;
         TextView infomation;
@@ -61,7 +69,17 @@ public class CompanyAdapter extends RecyclerView.Adapter<CompanyAdapter.companyV
             imageView = itemView.findViewById(R.id.company_image);
             infomation = itemView.findViewById(R.id.company_intro);
             name = itemView.findViewById(R.id.company_name);
+            itemView.setOnClickListener(this);
+        }
+
+
+        @Override
+        public void onClick(View view) {
+            onRecycleViewClickListener.onRecycleViewClickListener(view, this.getLayoutPosition());
         }
     }
+
+
+
 
 }

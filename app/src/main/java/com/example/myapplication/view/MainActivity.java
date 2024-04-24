@@ -1,33 +1,22 @@
 package com.example.myapplication.view;
 
 import androidx.activity.OnBackPressedCallback;
-import androidx.activity.OnBackPressedDispatcher;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
-import androidx.navigation.NavController;
-import androidx.navigation.NavHostController;
-import androidx.navigation.Navigation;
-import androidx.navigation.fragment.NavHostFragment;
-import androidx.navigation.ui.AppBarConfiguration;
-import androidx.navigation.ui.NavigationUI;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 
 import com.example.myapplication.R;
-import com.example.myapplication.config.CompanyAdapter;
-import com.example.myapplication.config.MainActivityRecycleViewAdapter;
 import com.example.myapplication.databinding.ActivityMainBinding;
-import com.example.myapplication.models.company;
+import com.example.myapplication.databinding.HeaderNavBinding;
+import com.example.myapplication.models.User;
 import com.google.android.material.navigation.NavigationView;
-
-import java.util.ArrayList;
-import java.util.List;
+import com.google.gson.Gson;
+import com.squareup.picasso.Picasso;
 
 public class MainActivity extends AppCompatActivity {
     public enum PAGE {
@@ -37,15 +26,14 @@ public class MainActivity extends AppCompatActivity {
     }
     public  PAGE currentPage = PAGE.HOME_PAGE;
 
+    HeaderNavBinding headerNavBinding;
     private ActivityMainBinding mainBinding;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        mainBinding = ActivityMainBinding.inflate(getLayoutInflater());
-
-
         setCallBackButton();
+        setUserInfoToNavHead();
         mainBinding.menuBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -66,16 +54,16 @@ public class MainActivity extends AppCompatActivity {
                 }
                 if (id == R.id.nav_job) {
                     if (currentPage != PAGE.ALL_JOB) {
-                        replaceFragment(new all_job_fragment());
+                        replaceFragment(new AllJobFragment());
                         currentPage = PAGE.ALL_JOB;
                     }
                     return true;
                 }
                 if (id == R.id.nav_companies) {
-//                    if (currentPage != PAGE.HOME_PAGE) {
-//                        replaceFragment(new HomeFragment());
-//                    }
-//                    return true;
+                    if (currentPage != PAGE.COMPANY) {
+                        replaceFragment(new AllCompanyFragment());
+                    }
+                    return true;
 
                 }
                 return false;
@@ -102,10 +90,20 @@ public class MainActivity extends AppCompatActivity {
         this.getOnBackPressedDispatcher().addCallback(this,callback);
     }
 
-    public void replaceFragment(Fragment fragment) {
+      public void replaceFragment(Fragment fragment) {
         FragmentTransaction fragmentTransaction = this.getSupportFragmentManager().beginTransaction();
         fragmentTransaction.replace(mainBinding.fragmentContainerView5.getId(),fragment);
         fragmentTransaction.commit();
+    }
+
+    public void setUserInfoToNavHead() {
+        String jsonUser = getIntent().getExtras().getBundle("UserBundle").getString("currentUserLogin");
+        User user = new Gson().fromJson(jsonUser, User.class);
+        mainBinding = ActivityMainBinding.inflate(getLayoutInflater());
+        headerNavBinding = HeaderNavBinding.bind(mainBinding.navView.getHeaderView(0));
+        headerNavBinding.emailTv.setText(user.getEmail());
+        Picasso.get().load(user.getAvatar_scr()).into(headerNavBinding.avatar);
+        headerNavBinding.nameTv.setText(user.getName());
     }
 
 

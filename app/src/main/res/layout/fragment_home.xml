@@ -31,6 +31,7 @@
                 android:fontFamily="@font/roboto_regular"/>
 
             <TextView
+                android:id="@+id/hot_job_view_more"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:textSize="18sp"
@@ -43,7 +44,7 @@
         </RelativeLayout>
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/horizontal_recyclerview"
+            android:id="@+id/hot_job_recyclerview"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
 
@@ -64,6 +65,7 @@
                 android:fontFamily="@font/roboto_regular"/>
 
             <TextView
+                android:id="@+id/company_view_more"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:textSize="18sp"
@@ -97,6 +99,7 @@
                 android:fontFamily="@font/roboto_regular"/>
 
             <TextView
+                android:id="@+id/latest_job_view_more"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:textSize="18sp"

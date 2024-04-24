@@ -4,33 +4,50 @@ import androidx.annotation.Nullable;
 
 import com.google.gson.annotations.SerializedName;
 
-public class Messager {
+public class Message {
     @SerializedName("cod")
-    private int cod;
-    @SerializedName("message")
+    private String cod;
+    @SerializedName("msg")
     private String message;
-    @SerializedName("error")
-    private String error;
+    @SerializedName("errors")
+    private Errors error;
 
-    public String getError() {
+    public class Errors {
+        @SerializedName("msg")
+        private String msg;
+
+        public Errors(String msg) {
+            this.msg = msg;
+        }
+
+        public String getMsg() {
+            return msg;
+        }
+
+        public void setMsg(String msg) {
+            this.msg = msg;
+        }
+    }
+
+    public Errors getError() {
         return error;
     }
 
-    public void setError(String error) {
+    public void setError(Errors error) {
         this.error = error;
     }
 
-    public Messager(int cod, @Nullable String message, @Nullable String error) {
+    public Message(String cod, @Nullable String message, @Nullable Errors error) {
         this.cod = cod;
         this.message = message;
         this.error = error;
     }
 
-    public int getCod() {
+    public String getCod() {
         return cod;
     }
 
-    public void setCod(int cod) {
+    public void setCod(String cod) {
         this.cod = cod;
     }
 
