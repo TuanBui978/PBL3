@@ -11,10 +11,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.myapplication.CompanyRecycleViewAdapter;
-import com.example.myapplication.R;
-import com.example.myapplication.config.ApiService;
-import com.example.myapplication.config.JobAdapter;
+import com.example.myapplication.controller.ApiService;
+import com.example.myapplication.controller.JobAdapter;
 import com.example.myapplication.databinding.FragmentCompanyTabBinding;
 import com.example.myapplication.models.Company;
 import com.example.myapplication.models.Job;

@@ -1,4 +1,4 @@
-package com.example.myapplication.config;
+package com.example.myapplication.controller;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;

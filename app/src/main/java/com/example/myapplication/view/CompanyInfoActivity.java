@@ -7,11 +7,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
-import com.example.myapplication.R;
-import com.example.myapplication.config.ApiService;
-import com.example.myapplication.config.JobAdapter;
+import com.example.myapplication.controller.ApiService;
+import com.example.myapplication.controller.JobAdapter;
 import com.example.myapplication.databinding.ActivityCompanyInfoBinding;
-import com.example.myapplication.databinding.CompanyInfomationBinding;
 import com.example.myapplication.models.Company;
 import com.example.myapplication.models.Job;
 import com.google.gson.Gson;
@@ -37,8 +35,8 @@ public class CompanyInfoActivity extends AppCompatActivity {
         binding = ActivityCompanyInfoBinding.inflate(getLayoutInflater());
 
         String jsonCompany = "";
-        if (this.getIntent().getBundleExtra("bundle") != null) {
-            jsonCompany = this.getIntent().getBundleExtra("bundle").getString("jsonCompany");
+        if (this.getIntent().getBundleExtra("Bundle") != null) {
+            jsonCompany = this.getIntent().getBundleExtra("Bundle").getString("jsonCompany");
         }
 
         this.company = new Gson().fromJson(jsonCompany, Company.class);
@@ -74,7 +72,9 @@ public class CompanyInfoActivity extends AppCompatActivity {
                             String jsonJob = new Gson().toJson(jobList.get(position));
                             bundle.putString("jsonJob", jsonJob);
                             Intent intent = new Intent(binding.getRoot().getContext(), JobInfoActivity.class);
-                            intent.putExtra("jobBundle", bundle);
+                            String jsonUser = CompanyInfoActivity.this.getIntent().getExtras().getBundle("Bundle").getString("jsonUser");
+                            bundle.putString("jsonUser", jsonUser);
+                            intent.putExtra("Bundle", bundle);
                             startActivity(intent);
                         }
                     });

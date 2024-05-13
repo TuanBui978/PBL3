@@ -4,13 +4,17 @@ import androidx.annotation.Nullable;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.util.List;
+
 public class Message {
     @SerializedName("cod")
     private String cod;
     @SerializedName("msg")
     private String message;
     @SerializedName("errors")
-    private Errors error;
+    private List<Errors> error;
+
+
 
     public class Errors {
         @SerializedName("msg")
@@ -29,17 +33,17 @@ public class Message {
         }
     }
 
-    public Errors getError() {
+    public List<Errors> getError() {
         return error;
     }
 
-    public void setError(Errors error) {
+    public Message(String cod, String message, List<Errors> error, String msg) {
+        this.cod = cod;
+        this.message = message;
         this.error = error;
     }
 
-    public Message(String cod, @Nullable String message, @Nullable Errors error) {
-        this.cod = cod;
-        this.message = message;
+    public void setError(List<Errors> error) {
         this.error = error;
     }
 

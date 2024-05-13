@@ -10,7 +10,7 @@ import android.os.Bundle;
 
 
 import com.example.myapplication.R;
-import com.example.myapplication.config.ScreenSlidePagerAdapter;
+import com.example.myapplication.controller.ScreenSlidePagerAdapter;
 
 import java.util.ArrayList;
 

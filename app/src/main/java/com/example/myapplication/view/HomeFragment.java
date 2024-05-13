@@ -8,17 +8,18 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager2.widget.ViewPager2;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.example.myapplication.CompanyRecycleViewAdapter;
 import com.example.myapplication.R;
-import com.example.myapplication.config.ApiService;
-import com.example.myapplication.config.CompanyAdapter;
-import com.example.myapplication.config.JobAdapter;
-import com.example.myapplication.config.ScreenSlidePagerAdapter;
+import com.example.myapplication.controller.ApiService;
+import com.example.myapplication.controller.CompanyAdapter;
+import com.example.myapplication.controller.JobAdapter;
 import com.example.myapplication.databinding.FragmentHomeBinding;
 import com.example.myapplication.models.Job;
 import com.example.myapplication.models.Company;
@@ -26,6 +27,7 @@ import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -62,7 +64,6 @@ public class HomeFragment extends Fragment {
         });
 
 
-
         return binding.getRoot();
     }
     public void getJobListFromAPI() {
@@ -93,9 +94,11 @@ public class HomeFragment extends Fragment {
             public void onRecycleViewClickListener(View v, int position) {
                         Bundle bundle = new Bundle();
                         String jsonJob = new Gson().toJson(jobList.subList(0, 5).get(position));
+                        String jsonUser = HomeFragment.this.getActivity().getIntent().getExtras().getBundle("UserBundle").getString("currentUserLogin");
+                        bundle.putString("jsonUser", jsonUser);
                         bundle.putString("jsonJob", jsonJob);
                         Intent intent = new Intent(HomeFragment.this.getContext(), JobInfoActivity.class);
-                        intent.putExtra("jobBundle", bundle);
+                        intent.putExtra("Bundle", bundle);
                         startActivity(intent);
                     }
         });
@@ -119,13 +122,74 @@ public class HomeFragment extends Fragment {
             public void onResponse(Call<List<Company>> call, Response<List<Company>> response) {
                 if (response.isSuccessful()) {
                     companyList = response.body();
-                    CompanyAdapter companyAdapter = new CompanyAdapter(companyList.subList(0, 5), binding.companyViewPager, new JobAdapter.OnRecycleViewClickListener() {
+
+                    List<Company> companies = new ArrayList<>();
+
+                    for (int i = 0; i < 5; i++) {
+                        int temp = new Random().nextInt(companyList.size());
+                        companies.add(companyList.get(temp));
+                    }
+
+                    CompanyAdapter companyAdapter = new CompanyAdapter(companies, binding.companyViewPager, new JobAdapter.OnRecycleViewClickListener() {
                         @Override
                         public void onRecycleViewClickListener(View v, int position) {
                             //can them vao
+                            Company company = companies.get(position);
+                            String jsonCompany = new Gson().toJson(company);
+                            Bundle bundle = new Bundle();
+                            bundle.putString("jsonCompany", jsonCompany);
+                            String jsonUser = HomeFragment.this.getActivity().getIntent().getExtras().getBundle("UserBundle").getString("currentUserLogin");
+                            bundle.putString("jsonUser", jsonUser);
+                            Intent intent = new Intent(getContext(), CompanyInfoActivity.class);
+                            intent.putExtra("Bundle", bundle);
+                            startActivity(intent);
                         }
                     });
+
+
                     binding.companyViewPager.setAdapter(companyAdapter);
+                    ((CompanyAdapter)binding.companyViewPager.getAdapter()).setLoopList();
+                    binding.Indicator.setViewPager(binding.companyViewPager);
+                    binding.companyViewPager.setCurrentItem(1);
+
+                    binding.companyViewPager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
+                        @Override
+                        public void onPageScrollStateChanged(int state) {
+                            super.onPageScrollStateChanged(state);
+                            if (state == ViewPager2.SCROLL_STATE_IDLE || state == ViewPager2.SCROLL_STATE_DRAGGING) {
+                                if (binding.companyViewPager.getCurrentItem() == 0)
+                                    binding.companyViewPager.setCurrentItem( binding.companyViewPager.getAdapter().getItemCount() - 2, false);
+                                else if (binding.companyViewPager.getCurrentItem() == binding.companyViewPager.getAdapter().getItemCount() - 1)
+                                    binding.companyViewPager.setCurrentItem( 1,false);
+                            }
+                        }
+                    });
+
+
+                    companies.clear();
+                    for (int i = 0; i < 5; i++) {
+                        int temp = new Random().nextInt(companyList.size());
+                        companies.add(companyList.get(temp));
+                    }
+
+                    CompanyRecycleViewAdapter companyRecycleViewAdapter = new CompanyRecycleViewAdapter(companies, new CompanyRecycleViewAdapter.OnRecycleViewOnClickListener() {
+                        @Override
+                        public void onClickListener(View view, int position) {
+                            Company company = companies.get(position);
+                            String jsonCompany = new Gson().toJson(company);
+                            Bundle bundle = new Bundle();
+                            bundle.putString("jsonCompany", jsonCompany);
+                            String jsonUser = HomeFragment.this.getActivity().getIntent().getExtras().getBundle("UserBundle").getString("currentUserLogin");
+                            bundle.putString("jsonUser", jsonUser);
+                            Intent intent = new Intent(getContext(), CompanyInfoActivity.class);
+                            intent.putExtra("Bundle", bundle);
+                            startActivity(intent);
+                        }
+                    });
+
+                    binding.recyclerView.setAdapter(companyRecycleViewAdapter);
+                    binding.recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
+
                     getJobListFromAPI();
                 }
                 else {

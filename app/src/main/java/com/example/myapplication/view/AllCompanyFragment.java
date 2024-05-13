@@ -1,7 +1,6 @@
 package com.example.myapplication.view;
 
 import android.content.Intent;
-import android.nfc.NfcAntennaInfo;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -9,16 +8,13 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.example.myapplication.CompanyRecycleViewAdapter;
-import com.example.myapplication.R;
-import com.example.myapplication.config.ApiService;
-import com.example.myapplication.config.CompanyAdapter;
+import com.example.myapplication.controller.ApiService;
 import com.example.myapplication.databinding.FragmentAllCompanyBinding;
 import com.example.myapplication.models.Company;
 import com.example.myapplication.models.Job;
@@ -112,8 +108,10 @@ public class AllCompanyFragment extends Fragment {
                             String jsonCompany = new Gson().toJson(company);
                             Bundle bundle = new Bundle();
                             bundle.putString("jsonCompany", jsonCompany);
+                            String jsonUser = AllCompanyFragment.this.getActivity().getIntent().getExtras().getBundle("UserBundle").getString("currentUserLogin");
+                            bundle.putString("jsonUser", jsonUser);
                             Intent intent = new Intent(getContext(), CompanyInfoActivity.class);
-                            intent.putExtra("bundle", bundle);
+                            intent.putExtra("Bundle", bundle);
                             startActivity(intent);
                         }
                     });

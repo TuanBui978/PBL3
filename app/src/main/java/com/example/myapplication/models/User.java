@@ -111,4 +111,6 @@ public class User {
     @SerializedName("UPDATE_AT")
     private String update_at;
 
+
+
 }

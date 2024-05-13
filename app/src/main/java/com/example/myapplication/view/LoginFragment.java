@@ -10,7 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import com.example.myapplication.config.ApiService;
+import com.example.myapplication.controller.ApiService;
 import com.example.myapplication.databinding.FragmentLoginBinding;
 import com.example.myapplication.models.Message;
 import com.example.myapplication.models.PostUser;
@@ -47,7 +47,7 @@ public class LoginFragment extends Fragment {
                                 loginFragmentBinding.errorTv.setText(message.getMessage());
                             }
                             else {
-                                loginFragmentBinding.errorTv.setText(message.getError().getMsg());
+                                loginFragmentBinding.errorTv.setText(message.getError().get(0).getMsg());
                             }
                             return;
                         }
@@ -58,13 +58,15 @@ public class LoginFragment extends Fragment {
                             Bundle bundle = new Bundle();
                             bundle.putString("currentUserLogin", jsonUser);
                             intent.putExtra("UserBundle", bundle);
+                            loginFragmentBinding.emailEt.setText("");
+                            loginFragmentBinding.passwordEt.setText("");
                             startActivity(intent);
                         }
                     }
 
                     @Override
                     public void onFailure(Call<User> call, Throwable throwable) {
-                        Toast.makeText(LoginFragment.this.getContext(), "Some thing wrong check your internet connect and try again", Toast.LENGTH_LONG);
+                        Toast.makeText(LoginFragment.this.getContext(), "Some thing wrong check your internet connect and try again", Toast.LENGTH_LONG).show();
                     }
                 });
             }

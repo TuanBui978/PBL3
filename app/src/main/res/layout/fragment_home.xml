@@ -14,7 +14,17 @@
             android:layout_height="400dp"
             android:layout_margin="10dp"
             >
+
+
         </androidx.viewpager2.widget.ViewPager2>
+        
+        <me.relex.circleindicator.CircleIndicator3
+            android:id="@+id/Indicator"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:backgroundTint="@color/black"/>
+
+
 
         <RelativeLayout android:layout_height="wrap_content"
             android:layout_width="match_parent"

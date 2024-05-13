@@ -14,10 +14,8 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Toast;
 
-import com.example.myapplication.R;
-import com.example.myapplication.config.ApiService;
-import com.example.myapplication.config.CompanyAdapter;
-import com.example.myapplication.config.JobAdapter;
+import com.example.myapplication.controller.ApiService;
+import com.example.myapplication.controller.JobAdapter;
 import com.example.myapplication.databinding.FragmentAllJobBinding;
 import com.example.myapplication.models.Company;
 import com.example.myapplication.models.Industry;
@@ -112,8 +110,10 @@ public class AllJobFragment extends Fragment {
                                 Bundle bundle = new Bundle();
                                 String jsonJob = new Gson().toJson(jobInAdapter.get(position));
                                 bundle.putString("jsonJob", jsonJob);
+                                String jsonUser = AllJobFragment.this.getActivity().getIntent().getExtras().getBundle("UserBundle").getString("currentUserLogin");
+                                bundle.putString("jsonUser", jsonUser);
                                 Intent intent = new Intent(AllJobFragment.this.getContext(), JobInfoActivity.class);
-                                intent.putExtra("jobBundle", bundle);
+                                intent.putExtra("Bundle", bundle);
                                 startActivity(intent);
                             }
                         });
@@ -193,6 +193,12 @@ public class AllJobFragment extends Fragment {
                 Toast.makeText(getContext(), "Something Wrong", Toast.LENGTH_LONG).show();
             }
         });
+    }
+
+    public void changeJobList(List<Job> newList) {
+        this.jobInAdapter.clear();
+        this.jobInAdapter.addAll(newList);
+        binding.recyclerView.getAdapter().notifyDataSetChanged();
     }
 
 }

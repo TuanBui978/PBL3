@@ -14,10 +14,13 @@ public class PostUser {
     private String password;
     @SerializedName("retype_password")
     private String retype_password;
-    @SerializedName("date_of_birth")
+    @SerializedName("dateOfBirth")
     private String dob;
     @SerializedName("gender")
     private String gender;
+
+    @SerializedName("avatar")
+    private String avatar;
 
     public PostUser(@Nullable String name,@Nullable String email,@Nullable String password,@Nullable String retype_password,@Nullable String dob,@Nullable String gender) {
         this.name = name;
@@ -30,6 +33,14 @@ public class PostUser {
     public  PostUser(String email, String password) {
         this.email = email;
         this.password = password;
+    }
+
+    public PostUser(String name, String email, String dob, String gender, String avatar) {
+        this.name = name;
+        this.email = email;
+        this.dob = dob;
+        this.gender = gender;
+        this.avatar = avatar;
     }
 
     public String getName() {

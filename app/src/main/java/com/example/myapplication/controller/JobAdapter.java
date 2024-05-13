@@ -1,5 +1,6 @@
-package com.example.myapplication.config;
+package com.example.myapplication.controller;
 
+import android.annotation.SuppressLint;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,6 +14,10 @@ import com.example.myapplication.models.Company;
 import com.example.myapplication.models.Job;
 import com.squareup.picasso.Picasso;
 
+import java.time.LocalDate;
+import java.time.Period;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import retrofit2.Call;
@@ -37,6 +42,7 @@ public class JobAdapter extends RecyclerView.Adapter<JobAdapter.JobNormalViewHol
         return new JobNormalViewHolder(binding);
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(@NonNull JobNormalViewHolder holder, int position) {
         Job job = jobList.get(position);
@@ -58,6 +64,18 @@ public class JobAdapter extends RecyclerView.Adapter<JobAdapter.JobNormalViewHol
                 Log.println(Log.DEBUG, "asdfasdfasdfasdfasdfasdfasdf", throwable.getMessage());
             }
         });
+
+
+
+
+        LocalDate now = LocalDate.now(ZoneId.of("VST"));
+        LocalDate thisJobPost = LocalDate.parse(job.getPostedDate(), DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+        Period difference = Period.between(thisJobPost, now);
+
+        if (difference.getDays() == 0) {
+            holder.viewBinding.timeUploadTv.setText("Today");
+        }
+        else holder.viewBinding.timeUploadTv.setText(difference.getDays() + " day ago");
 
     }
 

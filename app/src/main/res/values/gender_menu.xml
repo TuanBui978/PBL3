@@ -5,4 +5,9 @@
         <item>Nam</item>
         <item>Nữ</item>
     </string-array>
+
+    <string-array name="gender_string_in_edit">
+        <item>Nam</item>
+        <item>Nữ</item>
+    </string-array>
 </resources>

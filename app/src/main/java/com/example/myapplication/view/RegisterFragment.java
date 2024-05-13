@@ -16,26 +16,17 @@ import android.widget.DatePicker;
 import android.widget.Toast;
 
 import com.example.myapplication.R;
-import com.example.myapplication.config.ApiService;
+import com.example.myapplication.controller.ApiService;
 import com.example.myapplication.databinding.FragmentRegisterBinding;
 import com.example.myapplication.models.Message;
 import com.example.myapplication.models.PostUser;
-import com.example.myapplication.models.User;
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonObject;
 
-import org.json.JSONObject;
-
-import java.io.Console;
 import java.util.Calendar;
-import java.util.Objects;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.converter.gson.GsonConverterFactory;
-import retrofit2.http.Body;
 
 
 public class RegisterFragment extends Fragment implements View.OnClickListener {
@@ -124,7 +115,7 @@ public class RegisterFragment extends Fragment implements View.OnClickListener {
                 if (!response.isSuccessful()) {
                     Message message = new Gson().fromJson(response.errorBody().charStream(), Message.class);
                     if (message.getMessage() == null) {
-                        binding.errorTv.setText(message.getError().getMsg());
+                        binding.errorTv.setText(message.getError().get(0).getMsg());
                     }
                     else {
                         binding.errorTv.setText(message.getMessage());
