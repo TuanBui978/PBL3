@@ -175,6 +175,8 @@ public class MainActivity extends AppCompatActivity {
                 return false;
             }
 
+
+
             @Override
             public boolean onQueryTextChange(String newText) {
                 switch (currentPage) {
@@ -296,7 +298,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
-
+        replaceFragment(new HomeFragment());
         mainBinding.navView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {

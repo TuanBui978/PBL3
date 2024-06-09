@@ -34,6 +34,7 @@ android {
     }
 }
 
+
 dependencies {
 
     implementation("androidx.appcompat:appcompat:1.7.0")
@@ -50,5 +51,7 @@ dependencies {
     implementation ("com.squareup.picasso:picasso:2.8")
     implementation ("me.relex:circleindicator:2.1.6")
     implementation ("de.hdodenhof:circleimageview:3.1.0")
+    implementation ("com.github.barteksc:android-pdf-viewer:2.8.2")
+
 
 }

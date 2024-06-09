@@ -13,6 +13,7 @@ import android.os.Bundle;
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
@@ -49,6 +50,9 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.net.URL;
+import java.net.URLConnection;
+import java.nio.file.Files;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Objects;
@@ -110,6 +114,8 @@ public class UserInfoFragment extends Fragment {
                             Intent intent = new Intent(getContext(), PdfViewActivity.class);
                             intent.putExtra(PdfViewActivity.STR_BUNDLE, url);
                             startActivity(intent);
+
+
                         }
                     });
 
@@ -153,6 +159,13 @@ public class UserInfoFragment extends Fragment {
             }
         }
     }
+
+
+
+
+
+
+
 
     @SuppressLint("ClickableViewAccessibility")
     @Override
