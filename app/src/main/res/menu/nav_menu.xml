@@ -20,6 +20,20 @@
         <menu>
             <item android:id="@+id/nav_logout"
                 android:title="@string/logout"/>
+            <item android:id="@+id/my_apply_job"
+                android:title="My apply job"/>
+        </menu>
+    </item>
+    <item android:id="@+id/admin"
+        android:title="Admin"
+        android:visible="false">
+        <menu>
+            <item android:id="@+id/adminCompany"
+                android:title="Company"/>
+            <item android:id="@+id/adminJob"
+                android:title="Job"/>
+            <item android:id="@+id/adminUser"
+                android:title="User"/>
         </menu>
     </item>
 </menu>

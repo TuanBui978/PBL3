@@ -14,11 +14,14 @@ import com.example.myapplication.models.Company;
 import com.example.myapplication.models.Job;
 import com.squareup.picasso.Picasso;
 
+import java.time.DateTimeException;
 import java.time.LocalDate;
 import java.time.Period;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.List;
+import java.util.Objects;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -47,7 +50,9 @@ public class JobAdapter extends RecyclerView.Adapter<JobAdapter.JobNormalViewHol
     public void onBindViewHolder(@NonNull JobNormalViewHolder holder, int position) {
         Job job = jobList.get(position);
         holder.viewBinding.jobName.setText(job.getJobName());
-        Picasso.get().load(job.getSourcePicture()).resize(2048, 1600).onlyScaleDown().into(holder.viewBinding.companyLogo);
+        if (!Objects.equals(job.getSourcePicture(), "")) {
+            Picasso.get().load(job.getSourcePicture()).resize(2048, 1600).onlyScaleDown().into(holder.viewBinding.companyLogo);
+        }
         holder.viewBinding.jobLocation.setText(job.getLocation());
         holder.viewBinding.salaryTv.setText(job.getSalary());
 
@@ -69,7 +74,14 @@ public class JobAdapter extends RecyclerView.Adapter<JobAdapter.JobNormalViewHol
 
 
         LocalDate now = LocalDate.now(ZoneId.of("VST"));
-        LocalDate thisJobPost = LocalDate.parse(job.getPostedDate(), DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+        LocalDate thisJobPost = null;
+        try {
+            thisJobPost = LocalDate.parse(job.getPostedDate(), DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+        }
+        catch (DateTimeParseException e) {
+            thisJobPost = LocalDate.parse(job.getPostedDate().substring(0,10), DateTimeFormatter.ofPattern("dd-MM-yyyy"));
+        }
+
         Period difference = Period.between(thisJobPost, now);
 
         if (difference.getDays() == 0) {
@@ -85,7 +97,7 @@ public class JobAdapter extends RecyclerView.Adapter<JobAdapter.JobNormalViewHol
     }
 
     public class JobNormalViewHolder extends RecyclerView.ViewHolder implements  View.OnClickListener{
-        private JobInfomationBinding viewBinding;
+        public JobInfomationBinding viewBinding;
 
         public JobNormalViewHolder(@NonNull JobInfomationBinding binding) {
             super(binding.getRoot());
@@ -105,5 +117,17 @@ public class JobAdapter extends RecyclerView.Adapter<JobAdapter.JobNormalViewHol
 
     public List<Job> getJobList() {
         return  this.jobList;
+    }
+    public void changeJobList(List<Job> newList) {
+        this.jobList.clear();
+        this.jobList.addAll(newList);
+        notifyDataSetChanged();
+    }
+    public void deleteJob(int index) {
+        this.jobList.remove(index);
+        notifyItemRemoved(index);
+    }
+    public int getJobId(int index) {
+        return this.jobList.get(index).getJobId();
     }
 }

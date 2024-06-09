@@ -1,10 +1,15 @@
 package com.example.myapplication.view;
 
+import android.annotation.SuppressLint;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
+import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -13,11 +18,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import com.example.myapplication.controller.CompanyRecycleViewAdapter;
 import com.example.myapplication.controller.ApiService;
-import com.example.myapplication.databinding.FragmentAllCompanyBinding;
+import com.example.myapplication.controller.CompanyRecycleViewAdapter;
+import com.example.myapplication.controller.ItemTouchHelperListener;
+import com.example.myapplication.controller.CompanyRecycleViewItemTouchHelper;
+import com.example.myapplication.databinding.FragmentAdminCompanyBinding;
 import com.example.myapplication.models.Company;
 import com.example.myapplication.models.Job;
+import com.example.myapplication.models.Message;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
@@ -27,18 +35,24 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-
-public class AllCompanyFragment extends Fragment {
+/**
+ * A simple {@link Fragment} subclass.
+ * Use the {@link AdminCompanyFragment#newInstance} factory method to
+ * create an instance of this fragment.
+ */
+public class AdminCompanyFragment extends Fragment {
 
     List<Company> companyList;
     List<Company> companiesInAdapter = new ArrayList<>();
-    FragmentAllCompanyBinding binding;
+    FragmentAdminCompanyBinding binding;
 
+    Boolean isAdminUsing = false;
 
+    public void isAdminUser(boolean isInUsing) {
+        this.isAdminUsing = isInUsing;
+    }
 
-
-
-    public AllCompanyFragment() {
+    public AdminCompanyFragment() {
         // Required empty public constructor
     }
 
@@ -53,7 +67,16 @@ public class AllCompanyFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        binding = FragmentAllCompanyBinding.inflate(inflater, container, false);
+        binding = FragmentAdminCompanyBinding.inflate(inflater, container, false);
+
+        binding.addBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getContext(), CompanyEditActivity.class);
+                intent.putExtra("usedToAdd", true);
+                startActivity(intent);
+            }
+        });
 
         binding.recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
@@ -112,11 +135,10 @@ public class AllCompanyFragment extends Fragment {
                             String jsonCompany = new Gson().toJson(company);
                             Bundle bundle = new Bundle();
                             bundle.putString("jsonCompany", jsonCompany);
-                            String jsonUser = AllCompanyFragment.this.getActivity().getIntent().getExtras().getBundle("UserBundle").getString("currentUserLogin");
-                            bundle.putString("jsonUser", jsonUser);
-                            Intent intent = new Intent(getContext(), CompanyInfoActivity.class);
+                            Intent intent = new Intent(getContext(), CompanyEditActivity.class);
                             intent.putExtra("Bundle", bundle);
                             startActivity(intent);
+
                         }
                     });
 
@@ -125,7 +147,55 @@ public class AllCompanyFragment extends Fragment {
                     binding.recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
                     binding.recyclerView.setAdapter(companyAdapter);
 
+                    if (isAdminUsing) {
 
+                        ItemTouchHelper.SimpleCallback simpleCallback = new CompanyRecycleViewItemTouchHelper(0, ItemTouchHelper.LEFT , new ItemTouchHelperListener() {
+                            @Override
+                            public void onSwiped(RecyclerView.ViewHolder viewHolder) {
+                                if (viewHolder instanceof CompanyRecycleViewAdapter.CompanyRecycleViewHolder) {
+                                    DialogFragment dialogFragment = new DialogFragment();
+
+                                    AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                                    builder.setMessage("Are you sure you want to delete?")
+                                            .setCancelable(false)
+                                            .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                                                public void onClick(DialogInterface dialog, int id) {
+                                                    int index = viewHolder.getAdapterPosition();
+                                                    int companyId = companyAdapter.getCompanyId(index);
+                                                    ApiService.apiService.deleteCompany(companyId).enqueue(new Callback<Message>() {
+                                                        @Override
+                                                        public void onResponse(Call<Message> call, Response<Message> response) {
+                                                            if (response.isSuccessful()) {
+                                                                companyAdapter.deleteCompany(index);
+                                                            }
+                                                            else {
+                                                                Toast.makeText(getContext(), "Fail on delete", Toast.LENGTH_LONG).show();
+                                                                companyAdapter.notifyDataSetChanged();
+                                                            }
+                                                        }
+
+                                                        @Override
+                                                        public void onFailure(Call<Message> call, Throwable throwable) {
+                                                            Toast.makeText(getContext(), "Fail on call API", Toast.LENGTH_LONG).show();
+                                                            companyAdapter.notifyDataSetChanged();
+                                                        }
+                                                    });
+                                                }
+                                            })
+                                            .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                                                @SuppressLint("NotifyDataSetChanged")
+                                                public void onClick(DialogInterface dialog, int id) {
+                                                    dialog.cancel();
+                                                    companyAdapter.notifyDataSetChanged();
+                                                }
+                                            });
+                                    AlertDialog alert = builder.create();
+                                    alert.show();
+                                }
+                            }
+                        });
+                        new ItemTouchHelper(simpleCallback).attachToRecyclerView(binding.recyclerView);
+                    }
                 }
                 else  {
                     Toast.makeText(getContext(), "Error", Toast.LENGTH_LONG).show();
@@ -142,7 +212,5 @@ public class AllCompanyFragment extends Fragment {
     public void changeCompanyList(List<Company> newList) {
         ((CompanyRecycleViewAdapter)binding.recyclerView.getAdapter()).changeCompanyList(newList);
     }
-
-
 
 }

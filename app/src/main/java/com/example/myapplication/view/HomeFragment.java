@@ -15,7 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import com.example.myapplication.CompanyRecycleViewAdapter;
+import com.example.myapplication.controller.CompanyRecycleViewAdapter;
 import com.example.myapplication.R;
 import com.example.myapplication.controller.ApiService;
 import com.example.myapplication.controller.CompanyAdapter;
@@ -46,7 +46,8 @@ public class HomeFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getCompanyListFromApi();
+        getJobListFromAPI();
+
 
     }
 
@@ -72,6 +73,7 @@ public class HomeFragment extends Fragment {
             public void onResponse(Call<List<Job>> call, Response<List<Job>> response) {
                 if (response.isSuccessful()) {
                     jobList = response.body();
+                    getCompanyListFromApi();
                     setMainView();
                 }
                 else {
@@ -121,7 +123,16 @@ public class HomeFragment extends Fragment {
             @Override
             public void onResponse(Call<List<Company>> call, Response<List<Company>> response) {
                 if (response.isSuccessful()) {
+
                     companyList = response.body();
+                    for (int i = 0; i < companyList.size(); i++) {
+                        for (int j = 0; j < jobList.size(); j++) {
+                            if (jobList.get(j).getCompanyId() == companyList.get(i).getId()){
+                                companyList.get(i).setCompanyLogo(jobList.get(j).getSourcePicture());
+                                break;
+                            }
+                        }
+                    }
 
                     List<Company> companies = new ArrayList<>();
 
@@ -190,7 +201,7 @@ public class HomeFragment extends Fragment {
                     binding.recyclerView.setAdapter(companyRecycleViewAdapter);
                     binding.recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
 
-                    getJobListFromAPI();
+
                 }
                 else {
                     Toast.makeText(getContext(), "Error", Toast.LENGTH_LONG).show();

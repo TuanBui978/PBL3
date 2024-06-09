@@ -101,7 +101,7 @@
             android:id="@+id/sex_icon"
             android:layout_width="25dp"
             android:layout_height="25dp"
-            android:src="@drawable/sex_icon"
+            android:src="@drawable/gender_icon"
             android:layout_below="@id/salary_tv"
             android:layout_marginTop="15dp"/>
         <TextView

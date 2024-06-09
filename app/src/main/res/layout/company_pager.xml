@@ -49,9 +49,10 @@
         <TextView
             android:id="@+id/company_intro"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_height="wrap_content"
             android:text="@string/topdev_intro"
-            android:textSize="20sp"
+            android:textSize="15sp"
+            android:lines="3"
             android:layout_marginStart="15dp"
             android:layout_marginEnd="15dp"
             android:layout_marginBottom="5dp"/>

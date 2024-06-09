@@ -1,5 +1,6 @@
-package com.example.myapplication;
+package com.example.myapplication.controller;
 
+import android.annotation.SuppressLint;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,9 +10,15 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.myapplication.databinding.CompanyInfomationBinding;
 import com.example.myapplication.models.Company;
+import com.example.myapplication.models.Message;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
+import java.util.Objects;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class CompanyRecycleViewAdapter extends RecyclerView.Adapter<CompanyRecycleViewAdapter.CompanyRecycleViewHolder> {
 
@@ -43,7 +50,10 @@ public class CompanyRecycleViewAdapter extends RecyclerView.Adapter<CompanyRecyc
     @Override
     public void onBindViewHolder(@NonNull CompanyRecycleViewHolder holder, int position) {
         holder.binding.companyName.setText(companyList.get(position).getCompanyName());
-        Picasso.get().load(companyList.get(position).getCompanyLogo()).resize(640,480).onlyScaleDown().into(holder.binding.companyLogo);
+        if (!Objects.equals(companyList.get(position).getCompanyLogo(), "") ) {
+            Picasso.get().load(companyList.get(position).getCompanyLogo()).resize(640,480).onlyScaleDown().into(holder.binding.companyLogo);
+        }
+
         holder.binding.locationTv.setText(companyList.get(position).getLocation());
         holder.binding.staffSizeTv.setText(companyList.get(position).getStaffSize());
     }
@@ -57,9 +67,11 @@ public class CompanyRecycleViewAdapter extends RecyclerView.Adapter<CompanyRecyc
         public void onClickListener(View view, int position);
     }
 
-    class CompanyRecycleViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
-        CompanyInfomationBinding binding;
+
+    public class CompanyRecycleViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
+
+        public CompanyInfomationBinding binding;
 
         public CompanyRecycleViewHolder(CompanyInfomationBinding binding) {
             super(binding.getRoot());
@@ -72,4 +84,21 @@ public class CompanyRecycleViewAdapter extends RecyclerView.Adapter<CompanyRecyc
             recycleViewOnClickListener.onClickListener(view, getLayoutPosition());
         }
     }
+
+
+    public void changeCompanyList(List<Company> newList) {
+        this.companyList.clear();
+        this.companyList.addAll(newList);
+        notifyDataSetChanged();
+    }
+
+    public  void deleteCompany(int index) {
+        this.companyList.remove(index);
+        notifyItemRemoved(index);
+    }
+
+    public int getCompanyId(int index) {
+        return this.companyList.get(index).getId();
+    }
+
 }

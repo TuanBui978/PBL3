@@ -1,13 +1,24 @@
 package com.example.myapplication.view;
 
+import static androidx.constraintlayout.helper.widget.MotionEffect.TAG;
+
 import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
+import android.content.ContentResolver;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
 
+import android.os.Environment;
 import android.text.Html;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -16,25 +27,35 @@ import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
-import android.widget.PopupWindow;
-import android.widget.SpinnerAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.myapplication.R;
 import com.example.myapplication.controller.ApiService;
+import com.example.myapplication.controller.CVRecycleViewAdapter;
 import com.example.myapplication.databinding.DialogChangePassBinding;
 import com.example.myapplication.databinding.FragmentUserInfoBinding;
+import com.example.myapplication.models.CV;
 import com.example.myapplication.models.Message;
 import com.example.myapplication.models.PostUser;
 import com.example.myapplication.models.User;
 import com.google.gson.Gson;
-import com.google.gson.JsonObject;
+
 import com.squareup.picasso.Picasso;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.Calendar;
+import java.util.List;
 import java.util.Objects;
 
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -49,6 +70,8 @@ public class UserInfoFragment extends Fragment {
     private static final String ARG_PARAM = "param";
     private User user;
     private FragmentUserInfoBinding binding;
+
+    private ActivityResultLauncher<String> mGetContent;
 
 
 
@@ -74,11 +97,128 @@ public class UserInfoFragment extends Fragment {
         }
     }
 
+    public void showCV() {
+        ApiService.apiService.getCvByUserId(user.getId()).enqueue(new Callback<List<CV>>() {
+            @Override
+            public void onResponse(Call<List<CV>> call, Response<List<CV>> response) {
+                if (response.isSuccessful()) {
+                    List<CV> list = response.body();
+                    CVRecycleViewAdapter adapter = new CVRecycleViewAdapter(list, new CVRecycleViewAdapter.OnClickListener() {
+                        @Override
+                        public void onClick(View view, int pos) {
+                            String url = ApiService.url + "/cv/my-cv?id=" + list.get(pos).getId();
+                            Intent intent = new Intent(getContext(), PdfViewActivity.class);
+                            intent.putExtra(PdfViewActivity.STR_BUNDLE, url);
+                            startActivity(intent);
+                        }
+                    });
+
+                    binding.recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
+
+                    binding.recyclerView.setAdapter(adapter);
+                }
+                else {
+
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<CV>> call, Throwable throwable) {
+                Toast.makeText(getContext(), "Fails on call API", Toast.LENGTH_LONG).show();
+            }
+        });
+    }
+
+    public void convertToFile(InputStream inputStream, String destination) throws IOException {
+        OutputStream outputStream = null;
+        try
+        {
+            File file = new File(destination);
+            outputStream = new FileOutputStream(file);
+
+            int read = 0;
+            byte[] bytes = new byte[1024];
+            while ((read = inputStream.read(bytes)) != -1) {
+                outputStream.write(bytes, 0, read);
+            }
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        } finally
+        {
+            if(outputStream != null)
+            {
+                outputStream.close();
+            }
+        }
+    }
+
     @SuppressLint("ClickableViewAccessibility")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         binding = FragmentUserInfoBinding.inflate(inflater, container, false);
+
+        showCV();
+
+        mGetContent = registerForActivityResult(new ActivityResultContracts.GetContent(), new ActivityResultCallback<Uri>() {
+            @SuppressLint("Recycle")
+            @Override
+            public void onActivityResult(Uri uri) {
+
+                try {
+                    Log.e(TAG, "onActivityResult: " + getContext().getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS));
+                    ContentResolver contentResolver = getContext().getContentResolver();
+                    InputStream inputStream = contentResolver.openInputStream(uri);
+                    String fileName = "/user_cv_" + user.getId() + ".pdf";
+                    String destination = getContext().getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS).getPath() + fileName;
+                    convertToFile(inputStream, destination);
+                    File file = new File(destination);
+                    RequestBody requestBody = RequestBody.create(MediaType.parse("multipart/form-data"), file);
+                    MultipartBody.Part part = MultipartBody.Part.createFormData("file", file.getName(), requestBody);
+                    ApiService.apiService.uploadCV(part, user.getId()).enqueue(new Callback<Message>() {
+                        @Override
+                        public void onResponse(Call<Message> call, Response<Message> response) {
+                            if (response.isSuccessful()) {
+                                Toast.makeText(getContext(), "OKKKKKKKKKKKKKKKKKk", Toast.LENGTH_LONG).show();
+                                showCV();
+                            }
+                            else {
+                                Toast.makeText(getContext(), "Your file name has unicode", Toast.LENGTH_LONG).show();
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call<Message> call, Throwable throwable) {
+                            Toast.makeText(getContext(), "Fails on call api", Toast.LENGTH_LONG).show();
+                        }
+                    });
+
+                }
+                catch (Exception e) {
+                    Log.e(TAG, "onActivityResult: " + e.getMessage());
+
+                }
+
+
+
+
+
+
+
+            }
+        });
+
+
+        binding.uploadBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                    mGetContent.launch("application/pdf");
+            }
+        });
+
+
         binding.nameEt.setText( user.getName());
         binding.emailEt.setText(user.getEmail());
         binding.selectDate.setText(user.getDate_of_birth().substring(0,10));
@@ -215,6 +355,9 @@ public class UserInfoFragment extends Fragment {
         });
 
 
+
         return binding.getRoot();
     }
+
+
 }

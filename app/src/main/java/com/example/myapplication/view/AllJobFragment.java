@@ -1,5 +1,6 @@
 package com.example.myapplication.view;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -24,6 +25,7 @@ import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -126,8 +128,10 @@ public class AllJobFragment extends Fragment {
                                 Bundle bundle = new Bundle();
                                 String jsonJob = new Gson().toJson(jobInAdapter.get(position));
                                 bundle.putString("jsonJob", jsonJob);
+                                String jsonUser = AllJobFragment.this.getActivity().getIntent().getExtras().getBundle("UserBundle").getString("currentUserLogin");
+                                bundle.putString("jsonUser", jsonUser);
                                 Intent intent = new Intent(AllJobFragment.this.getContext(), JobInfoActivity.class);
-                                intent.putExtra("jobBundle", bundle);
+                                intent.putExtra("Bundle", bundle);
                                 startActivity(intent);
                             }
                         });
@@ -195,10 +199,13 @@ public class AllJobFragment extends Fragment {
         });
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     public void changeJobList(List<Job> newList) {
         this.jobInAdapter.clear();
         this.jobInAdapter.addAll(newList);
-        binding.recyclerView.getAdapter().notifyDataSetChanged();
+        if (binding.recyclerView.getAdapter() != null) {
+            binding.recyclerView.getAdapter().notifyDataSetChanged();
+        }
     }
 
 }
