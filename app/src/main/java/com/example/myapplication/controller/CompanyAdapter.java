@@ -48,7 +48,9 @@ public class CompanyAdapter extends RecyclerView.Adapter<CompanyAdapter.companyV
                 Company company = companyList.get(position);
                 holder.name.setText(company.getCompanyName());
                 holder.infomation.setText(company.getCompanyDescription());
-                Picasso.get().load(company.getCompanyLogo()).resize(2048,1600).onlyScaleDown().into(holder.logoView);
+                if (company.getCompanyLogo() != null && !company.getCompanyLogo().isEmpty()) {
+                    Picasso.get().load(company.getCompanyLogo()).placeholder(R.drawable.load_animation).error(R.mipmap.ic_launcher).resize(2048,1600).onlyScaleDown().into(holder.logoView);
+                }
 
                 ApiService.apiService.getJobListByCompany(company.getId()).enqueue(new Callback<List<Job>>() {
                     @Override

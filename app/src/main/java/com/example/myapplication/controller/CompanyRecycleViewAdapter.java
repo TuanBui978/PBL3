@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.myapplication.R;
 import com.example.myapplication.databinding.CompanyInfomationBinding;
 import com.example.myapplication.models.Company;
 import com.example.myapplication.models.Message;
@@ -50,8 +51,8 @@ public class CompanyRecycleViewAdapter extends RecyclerView.Adapter<CompanyRecyc
     @Override
     public void onBindViewHolder(@NonNull CompanyRecycleViewHolder holder, int position) {
         holder.binding.companyName.setText(companyList.get(position).getCompanyName());
-        if (!Objects.equals(companyList.get(position).getCompanyLogo(), "") ) {
-            Picasso.get().load(companyList.get(position).getCompanyLogo()).resize(640,480).onlyScaleDown().into(holder.binding.companyLogo);
+        if (companyList.get(position).getCompanyLogo() != null && !Objects.equals(companyList.get(position).getCompanyLogo(), "") ) {
+            Picasso.get().load(companyList.get(position).getCompanyLogo()).placeholder(R.drawable.load_animation).error(R.mipmap.ic_launcher).resize(640,480).onlyScaleDown().into(holder.binding.companyLogo);
         }
 
         holder.binding.locationTv.setText(companyList.get(position).getLocation());

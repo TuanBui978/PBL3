@@ -3,21 +3,24 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".view.AllJobFragment"
+    tools:context=".view.AllApplyFragment"
+    android:layout_margin="10dp"
     android:orientation="vertical">
 
+    <!-- TODO: Update blank fragment layout -->
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Latest Jobs"
-        android:textSize="24sp"
+        android:text="User Apply"
+        android:textSize="18dp"
         android:textStyle="bold"
-        android:fontFamily="@font/roboto_regular"
-        android:layout_marginStart="10dp"/>
+        android:fontFamily="@font/roboto_regular"/>
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
+
 
 
 </LinearLayout>

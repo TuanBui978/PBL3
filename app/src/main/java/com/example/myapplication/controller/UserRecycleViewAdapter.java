@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.myapplication.R;
 import com.example.myapplication.databinding.UserInfomationBinding;
 import com.example.myapplication.models.Company;
 import com.example.myapplication.models.Message;
@@ -25,6 +26,11 @@ import retrofit2.Response;
 public class UserRecycleViewAdapter extends RecyclerView.Adapter<UserRecycleViewAdapter.UserViewHolder> {
     List<User> AllUser;
     List<User> UserShowed;
+
+
+
+    public OnRecycleViewOnClickListener listener;
+
     public UserRecycleViewAdapter(List<User> userList) {
         AllUser = userList;
         int firstIndex = 0;
@@ -35,6 +41,19 @@ public class UserRecycleViewAdapter extends RecyclerView.Adapter<UserRecycleView
         UserShowed = new ArrayList<>();
         UserShowed.addAll((userList.subList(firstIndex, lastIndex)));
     }
+
+    public UserRecycleViewAdapter(List<User> userList, OnRecycleViewOnClickListener listener) {
+        AllUser = userList;
+        int firstIndex = 0;
+        int lastIndex = 20;
+        if (userList.size() < lastIndex) {
+            lastIndex = userList.size();
+        }
+        UserShowed = new ArrayList<>();
+        UserShowed.addAll((userList.subList(firstIndex, lastIndex)));
+        this.listener = listener;
+    }
+
 
     @SuppressLint("NotifyDataSetChanged")
     public void insertPage(int page) {
@@ -61,10 +80,10 @@ public class UserRecycleViewAdapter extends RecyclerView.Adapter<UserRecycleView
     public void onBindViewHolder(@NonNull UserRecycleViewAdapter.UserViewHolder holder, int position) {
         User user = AllUser.get(position);
         if (!Objects.equals(user.getAvatar_scr(), "")) {
-            Picasso.get().load(user.getAvatar_scr()).resize(60, 60).onlyScaleDown().into(holder.binding.avatar);
+            Picasso.get().load(user.getAvatar_scr()).placeholder(R.drawable.load_animation).error(R.mipmap.ic_launcher).resize(60, 60).onlyScaleDown().into(holder.binding.avatar);
         }
         holder.binding.nameTv.setText(user.getName());
-        holder.binding.dobTv.setText(user.getDate_of_birth().substring(0,11));
+        holder.binding.dobTv.setText(user.getDate_of_birth().substring(0,10));
         holder.binding.genderTv.setText(user.getGender());
     }
 
@@ -84,16 +103,27 @@ public class UserRecycleViewAdapter extends RecyclerView.Adapter<UserRecycleView
 
     }
 
-    public class UserViewHolder extends RecyclerView.ViewHolder {
+    public class UserViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
         public UserInfomationBinding binding;
         public UserViewHolder(@NonNull UserInfomationBinding binding) {
             super(binding.getRoot());
             this.binding = binding;
+            binding.getRoot().setOnClickListener(this);
+        }
+        @Override
+        public void onClick(View view) {
+            if (listener != null) {
+                listener.onClick(view, getAdapterPosition());
+            }
         }
     }
     public void changeUserList(List<User> newList) {
         this.UserShowed.clear();
         this.UserShowed.addAll(newList);
         notifyDataSetChanged();
+    }
+
+    public interface OnRecycleViewOnClickListener {
+        void onClick(View view, int pos);
     }
 }

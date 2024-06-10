@@ -62,11 +62,15 @@ public class MainActivity extends AppCompatActivity {
         setCallBackButton();
         setUserInfoToNavHead();
 
+
         User user = new Gson().fromJson(getIntent().getExtras().getBundle("UserBundle").getString("currentUserLogin"), User.class);
         this.currentUserIdLogin = user.getId();
 
         this.userLogin = new Gson().fromJson(getIntent().getExtras().getBundle("UserBundle").getString("currentUserLogin"), User.class);
 
+        if (Objects.equals(userLogin.getPrivilege_id(), "1")) {
+            JobInfoActivity.isAdminUse = true;
+        }
 
         mainBinding.menuBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -99,21 +103,20 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
-
+        mainBinding.searchBar.setEnabled(false);
+        mainBinding.searchBar.setIconified(false);
+        mainBinding.searchBar.clearFocus();
         mainBinding.searchBar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 mainBinding.searchBar.setIconified(false);
-                if (currentPage == HOME_PAGE || currentPage == USER_PAGE || currentPage == MY_APPLY || currentPage == ABOUT_US) {
-                    replaceFragment(new AllJobFragment());
-                    currentPage = ALL_JOB;
-                }
             }
         });
 
         mainBinding.searchBar.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
+
                 switch (currentPage) {
                     case ALL_JOB:
                         ApiService.apiService.getJobListByName(query).enqueue(new Callback<List<Job>>() {
@@ -179,6 +182,10 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public boolean onQueryTextChange(String newText) {
+                if (currentPage == HOME_PAGE || currentPage == USER_PAGE || currentPage == MY_APPLY || currentPage == ABOUT_US) {
+                    replaceFragment(new AllJobFragment());
+                    currentPage = ALL_JOB;
+                }
                 switch (currentPage) {
                     case ALL_JOB:
                         ApiService.apiService.getJobListByName(newText).enqueue(new Callback<List<Job>>() {
@@ -368,12 +375,14 @@ public class MainActivity extends AppCompatActivity {
                     if (currentPage != ADMIN_USER) {
                         replaceFragment(new AdminUserFragment());
                         currentPage = ADMIN_USER;
+                        getOnBackPressedDispatcher().onBackPressed();
                     }
                 }
                 if (id == R.id.nav_about_us) {
                     if (currentPage != ABOUT_US) {
                         replaceFragment(new AboutUsFragment());
                         currentPage = ABOUT_US;
+                        getOnBackPressedDispatcher().onBackPressed();
                     }
                 }
 
@@ -390,6 +399,7 @@ public class MainActivity extends AppCompatActivity {
                 if (currentPage != USER_PAGE) {
                     replaceFragment(new UserInfoFragment().newInstance(getIntent().getExtras().getBundle("UserBundle").getString("currentUserLogin")));
                     currentPage = USER_PAGE;
+                    getOnBackPressedDispatcher().onBackPressed();
                 }
             }
         });
@@ -432,7 +442,9 @@ public class MainActivity extends AppCompatActivity {
         mainBinding = ActivityMainBinding.inflate(getLayoutInflater());
         headerNavBinding = HeaderNavBinding.bind(mainBinding.navView.getHeaderView(0));
         headerNavBinding.emailTv.setText(user.getEmail());
-        Picasso.get().load(user.getAvatar_scr()).into(headerNavBinding.avatar);
+        if (user.getAvatar_scr() != null && !user.getAvatar_scr().isEmpty()) {
+            Picasso.get().load(user.getAvatar_scr()).placeholder(R.drawable.load_animation).error(R.mipmap.ic_launcher).into(headerNavBinding.avatar);
+        }
         headerNavBinding.nameTv.setText(user.getName());
     }
 

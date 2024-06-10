@@ -13,11 +13,10 @@
         <ImageView
             android:layout_width="50dp"
             android:layout_height="50dp"
-            android:layout_centerInParent="true"
             android:layout_alignParentEnd="true"
+            android:layout_centerInParent="true"
             android:layout_marginEnd="20dp"
-            android:src="@drawable/recycle_bin"
-            />
+            android:src="@drawable/recycle_bin" />
 
     </RelativeLayout>
 
@@ -44,16 +43,34 @@
             android:fontFamily="@font/roboto_regular"
             />
 
+        <ImageView
+            android:id="@+id/gender_icon"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:src="@drawable/gender_icon"
+            android:layout_toEndOf="@id/avatar"
+            android:layout_below="@id/name_tv"
+            android:layout_margin="10dp"/>
+
         <TextView
             android:id="@+id/gender_tv"
             android:textSize="18sp"
             android:fontFamily="@font/roboto_regular"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_toEndOf="@id/avatar"
+            android:layout_toEndOf="@id/gender_icon"
             android:layout_below="@id/name_tv"
             android:layout_marginStart="10dp"
             android:layout_marginTop="10dp"/>
+
+        <ImageView
+            android:id="@+id/calendar_icon"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:src="@drawable/clock_icon"
+            android:layout_toEndOf="@id/avatar"
+            android:layout_below="@id/gender_tv"
+            android:layout_margin="10dp"/>
 
         <TextView
             android:id="@+id/dob_tv"
@@ -61,7 +78,7 @@
             android:fontFamily="@font/roboto_regular"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_toEndOf="@id/avatar"
+            android:layout_toEndOf="@id/calendar_icon"
             android:layout_below="@id/gender_tv"
             android:layout_marginStart="10dp"
             android:layout_marginTop="10dp"/>

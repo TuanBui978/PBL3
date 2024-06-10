@@ -114,13 +114,10 @@ public class UserInfoFragment extends Fragment {
                             Intent intent = new Intent(getContext(), PdfViewActivity.class);
                             intent.putExtra(PdfViewActivity.STR_BUNDLE, url);
                             startActivity(intent);
-
-
                         }
                     });
 
                     binding.recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
-
                     binding.recyclerView.setAdapter(adapter);
                 }
                 else {
@@ -213,13 +210,6 @@ public class UserInfoFragment extends Fragment {
                     Log.e(TAG, "onActivityResult: " + e.getMessage());
 
                 }
-
-
-
-
-
-
-
             }
         });
 
@@ -247,7 +237,7 @@ public class UserInfoFragment extends Fragment {
 
         binding.avatarUrl.setText(user.getAvatar_scr());
         if (!Objects.equals(user.getAvatar_scr(), "") && user.getAvatar_scr() != null) {
-            Picasso.get().load(user.getAvatar_scr()).resize(150,150).onlyScaleDown().placeholder(R.drawable.load_animation).error(R.mipmap.ic_launcher).into(binding.avatar);
+            Picasso.get().load(user.getAvatar_scr()).placeholder(R.drawable.load_animation).error(R.mipmap.ic_launcher).resize(150,150).onlyScaleDown().into(binding.avatar);
         }
 
         binding.selectDate.setOnTouchListener(new View.OnTouchListener() {

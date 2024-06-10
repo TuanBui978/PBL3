@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.myapplication.R;
 import com.example.myapplication.databinding.JobInfomationBinding;
 import com.example.myapplication.models.Company;
 import com.example.myapplication.models.Job;
@@ -51,7 +52,7 @@ public class JobAdapter extends RecyclerView.Adapter<JobAdapter.JobNormalViewHol
         Job job = jobList.get(position);
         holder.viewBinding.jobName.setText(job.getJobName());
         if (!Objects.equals(job.getSourcePicture(), "")) {
-            Picasso.get().load(job.getSourcePicture()).resize(2048, 1600).onlyScaleDown().into(holder.viewBinding.companyLogo);
+            Picasso.get().load(job.getSourcePicture()).placeholder(R.drawable.load_animation).error(R.mipmap.ic_launcher).resize(2048, 1600).onlyScaleDown().into(holder.viewBinding.companyLogo);
         }
         holder.viewBinding.jobLocation.setText(job.getLocation());
         holder.viewBinding.salaryTv.setText(job.getSalary());

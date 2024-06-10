@@ -7,7 +7,45 @@
     tools:context=".view.JobEditActivity"
     android:orientation="vertical">
 
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/app_bar_layout"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:paddingStart="0dp"
+        tools:ignore="RtlSymmetry">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolBar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            app:contentInsetStart="0dp">
+
+            <Button
+                android:id="@+id/back_btn"
+                android:layout_width="55dp"
+                android:layout_height="match_parent"
+                android:background="@drawable/ic_arrow_left"
+                android:backgroundTint="#8f9490" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingTop="10dp"
+                android:paddingEnd="55dp"
+                android:text="Job Details"
+                android:textAlignment="center"
+                android:textColor="#8f9490"
+                android:textSize="25sp"
+                android:textStyle="bold"
+                tools:ignore="RtlSymmetry" />
+
+        </androidx.appcompat.widget.Toolbar>
+
+
+    </com.google.android.material.appbar.AppBarLayout>
+
     <TextView
+        android:layout_margin="10dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Job Infomation"
@@ -41,6 +79,7 @@
                 android:background="@drawable/custom_edit_text"
                 android:layout_margin="10dp"
                 android:padding="10dp"
+                android:lines="1"
                 />
 
             <TextView
@@ -115,6 +154,7 @@
                 android:background="@drawable/custom_edit_text"
                 android:layout_margin="10dp"
                 android:padding="10dp"
+                android:lines="1"
                 />
 
             <TextView
@@ -132,6 +172,7 @@
                 android:background="@drawable/custom_edit_text"
                 android:layout_margin="10dp"
                 android:padding="10dp"
+                android:lines="1"
                 />
             <TextView
                 android:layout_width="match_parent"
@@ -148,6 +189,7 @@
                 android:background="@drawable/custom_edit_text"
                 android:layout_margin="10dp"
                 android:padding="10dp"
+                android:lines="1"
                 />
 
             <TextView
@@ -165,6 +207,7 @@
                 android:background="@drawable/custom_edit_text"
                 android:layout_margin="10dp"
                 android:padding="10dp"
+                android:lines="1"
                 />
 
             <TextView
@@ -182,6 +225,7 @@
                 android:background="@drawable/custom_edit_text"
                 android:layout_margin="10dp"
                 android:padding="10dp"
+                android:lines="1"
                 />
 
             <TextView
@@ -199,6 +243,7 @@
                 android:background="@drawable/custom_edit_text"
                 android:layout_margin="10dp"
                 android:padding="10dp"
+                android:lines="1"
                 />
 
             <TextView
@@ -216,6 +261,7 @@
                 android:background="@drawable/custom_edit_text"
                 android:layout_margin="10dp"
                 android:padding="10dp"
+                android:lines="1"
                 />
 
             <TextView
@@ -233,6 +279,7 @@
                 android:background="@drawable/custom_edit_text"
                 android:layout_margin="10dp"
                 android:padding="10dp"
+                android:lines="1"
                 />
 
             <TextView
@@ -250,6 +297,7 @@
                 android:background="@drawable/custom_edit_text"
                 android:layout_margin="10dp"
                 android:padding="10dp"
+                android:lines="1"
                 />
 
             <TextView

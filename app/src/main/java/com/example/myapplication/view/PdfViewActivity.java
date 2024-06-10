@@ -12,6 +12,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.view.View;
 import android.webkit.WebViewClient;
 
 import com.example.myapplication.R;
@@ -42,6 +43,12 @@ public class PdfViewActivity extends AppCompatActivity {
         }
         getFileFromUrl(url);
 
+        binding.backBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                getOnBackPressedDispatcher().onBackPressed();
+            }
+        });
 
         setContentView(binding.getRoot());
     }

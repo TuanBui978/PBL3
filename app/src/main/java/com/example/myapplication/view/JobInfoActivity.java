@@ -35,11 +35,15 @@ public class JobInfoActivity extends AppCompatActivity {
 
     private ActivityJobInfoBinding binding;
 
+    public static Boolean isAdminUse = false;
+
     private int applyButtonStatus = APPLY;
 
     public static final int APPLY = 0;
 
     public static final int CANCEL = 1;
+
+
 
 
     @Override
@@ -78,11 +82,15 @@ public class JobInfoActivity extends AppCompatActivity {
                     if (response.body() != null) {
                         Company company = response.body();
                         fragmentList.add(CompanyTabFragment.newInstance(company));
+                        if (isAdminUse) {
+                            fragmentList.add(AllApplyFragment.newInstance(job.getJobId(), null));
+                        }
                         ScreenSlidePagerAdapter adapter = new ScreenSlidePagerAdapter(JobInfoActivity.this, fragmentList);
                         binding.viewPager.setAdapter(adapter);
-                        String[] tabText = new String[2];
+                        String[] tabText = new String[3];
                         tabText[0] = "Job Details";
                         tabText[1] = "Company";
+                        tabText[2] = "Apply";
                         new TabLayoutMediator(binding.tabLayout, binding.viewPager, ((tab, position) -> {
                             tab.setText(tabText[position]);
                         })).attach();

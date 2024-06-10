@@ -45,7 +45,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="40dp"
                     android:layout_marginTop="5dp"
-
+                    android:lines="1"
                     android:background="@drawable/custom_edit_text"
                     android:enabled="false"
                     android:fontFamily="@font/roboto_regular"
@@ -73,7 +73,8 @@
                         android:layout_height="45dp"
                         android:enabled="false"
                         android:fontFamily="@font/roboto_regular"
-                        android:textSize="18sp" />
+                        android:textSize="18sp"
+                        android:padding="5dp"/>
                 </RelativeLayout>
 
                 <TextView
@@ -90,7 +91,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="40dp"
                     android:layout_marginTop="5dp"
-
+                    android:lines="1"
                     android:background="@drawable/custom_edit_text"
                     android:clickable="false"
                     android:enabled="false"
@@ -124,7 +125,7 @@
                         android:enabled="false"
                         android:fontFamily="@font/roboto_regular"
                         android:padding="5dp"
-
+                        android:lines="1"
                         android:textSize="18sp" />
 
                     <de.hdodenhof.circleimageview.CircleImageView
@@ -151,7 +152,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="40dp"
                     android:layout_marginTop="5dp"
-
+                    android:lines="1"
                     android:background="@drawable/custom_edit_text"
                     android:enabled="false"
                     android:fontFamily="@font/roboto_regular"

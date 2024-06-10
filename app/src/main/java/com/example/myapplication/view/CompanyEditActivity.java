@@ -35,7 +35,12 @@ public class CompanyEditActivity extends AppCompatActivity {
 
         String jsonCompany = null;
         binding = ActivityCompanyEditBinding.inflate(getLayoutInflater());
-
+        binding.backBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                getOnBackPressedDispatcher().onBackPressed();
+            }
+        });
         if (getIntent().getBundleExtra("Bundle") != null) {
             jsonCompany = getIntent().getBundleExtra("Bundle").getString("jsonCompany");
         }

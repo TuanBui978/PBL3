@@ -39,6 +39,13 @@ public class JobEditActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = ActivityJobEditBinding.inflate(getLayoutInflater());
 
+        binding.backBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                getOnBackPressedDispatcher().onBackPressed();
+            }
+        });
+
         if (getIntent().getExtras() != null) {
             String jsonJob = getIntent().getStringExtra("jsonJob");
             if (!Objects.equals(jsonJob, "")) {

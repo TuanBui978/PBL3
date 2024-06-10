@@ -34,7 +34,7 @@ import retrofit2.http.Query;
 
 public interface ApiService{
 
-    String url = "http://192.168.1.6:3000";
+    String url = "http://192.168.1.13:3000";
 
     Gson gson = new Gson().newBuilder().setLenient().create();
     Retrofit retrofit = new Retrofit.Builder().baseUrl(url).addConverterFactory(GsonConverterFactory.create(gson)).build();
@@ -126,4 +126,10 @@ public interface ApiService{
 
     @GET("/cv/my-cv")
     Call<String> getFile(@Query("id") int id);
+
+    @DELETE("/user/my-cv/delete")
+    Call<Message> deleteCV(@Query("id") int id);
+
+    @GET("/job/apply-list")
+    Call<List<User>> getApplyOfJobList(@Query("id") int id);
 }

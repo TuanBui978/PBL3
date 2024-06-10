@@ -89,7 +89,6 @@ public class AllJobFragment extends Fragment {
             }
         });
         getCompanyListFromApi();
-        getIndustryListFromApi();
 
         return binding.getRoot();
     }
@@ -153,31 +152,7 @@ public class AllJobFragment extends Fragment {
 
     }
 
-    void getIndustryListFromApi() {
-        ApiService.apiService.getIndustryList().enqueue(new Callback<List<Industry>>() {
-            @Override
-            public void onResponse(Call<List<Industry>> call, Response<List<Industry>> response) {
-                if (response.isSuccessful()) {
-                    industryList = response.body();
-                    industryNames = new ArrayList<>();
-                    for (int i = 0; i < industryList.size(); i++) {
-                        industryNames.add(industryList.get(i).getIndustryName());
-                    }
-                    ArrayAdapter<String> industrySpinnerAdapter = new ArrayAdapter<>(getContext(), androidx.appcompat.R.layout.support_simple_spinner_dropdown_item, industryNames);
-                    binding.industrySpinner.setAdapter(industrySpinnerAdapter);
-                }
-                else {
-                    Toast.makeText(AllJobFragment.this.getContext(), "Something wrong", Toast.LENGTH_LONG).show();
-                }
-            }
 
-            @Override
-            public void onFailure(Call<List<Industry>> call, Throwable throwable) {
-                Toast.makeText(AllJobFragment.this.getContext(), "Server or internet is error", Toast.LENGTH_LONG).show();
-            }
-        });
-
-    }
 
     void getCompanyListFromApi() {
         ApiService.apiService.getCompanyList().enqueue(new Callback<List<Company>>() {
