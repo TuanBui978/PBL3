@@ -40,17 +40,17 @@ public class CVRecycleViewAdapter extends RecyclerView.Adapter<CVRecycleViewAdap
     }
 
     @Override
-    public void onBindViewHolder(@NonNull CVViewHolder holder, @SuppressLint("RecyclerView") int position) {
+    public void onBindViewHolder(@NonNull CVViewHolder holder, int position) {
         holder.getBinding().fileName.setText(cvList.get(position).getName());
         if (!hideDeleteBtn) {
             holder.getBinding().deleteBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    ApiService.apiService.deleteCV(cvList.get(position).getId()).enqueue(new Callback<Message>() {
+                    ApiService.apiService.deleteCV(cvList.get(holder.getLayoutPosition()).getId()).enqueue(new Callback<Message>() {
                         @Override
                         public void onResponse(Call<Message> call, Response<Message> response) {
                             if (response.isSuccessful()) {
-                                deleteItem(position);
+                                deleteItem(holder.getLayoutPosition());
                             }
                         }
 
