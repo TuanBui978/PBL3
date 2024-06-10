@@ -94,6 +94,7 @@ public class AboutUsFragment extends Fragment {
                             }
                         });
                         mainActivity.showAdminMenu();
+                        JobInfoActivity.isAdminUse = true;
                     }
                     else {
                         Toast.makeText(getContext(), "Wrong admin code", Toast.LENGTH_LONG).show();
