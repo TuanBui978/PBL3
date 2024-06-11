@@ -18,7 +18,9 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import android.os.Environment;
+import android.text.Editable;
 import android.text.Html;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -240,6 +242,7 @@ public class UserInfoFragment extends Fragment {
             Picasso.get().load(user.getAvatar_scr()).placeholder(R.drawable.load_animation).error(R.mipmap.ic_launcher).resize(150,150).onlyScaleDown().into(binding.avatar);
         }
 
+
         binding.selectDate.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
@@ -264,17 +267,7 @@ public class UserInfoFragment extends Fragment {
 
         });
 
-        binding.avatarUrl.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
-                if (i == EditorInfo.IME_ACTION_DONE) {
-                    Picasso.get().load(binding.avatarUrl.getText().toString()).resize(480,480).onlyScaleDown().into(binding.avatar);
-                    return true;
-                }
-                return false;
-            }
 
-        });
 
         binding.editBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -286,6 +279,7 @@ public class UserInfoFragment extends Fragment {
                     binding.selectDate.setEnabled(true);
                     binding.avatarUrl.setEnabled(true);
                     isEditBtnClick = true;
+
                 }
                 else {
                     if (binding.nameEt.getText().toString().equals("")) {
@@ -311,6 +305,10 @@ public class UserInfoFragment extends Fragment {
                                 binding.avatarUrl.setEnabled(false);
                                 binding.emailEt.setEnabled(false);
                                 isEditBtnClick = false;
+                                ((MainActivity)getActivity()).userUpdate();
+                                if (!binding.avatarUrl.getText().toString().equals("")) {
+                                    Picasso.get().load(binding.avatarUrl.getText().toString()).placeholder(R.drawable.load_animation).error(R.mipmap.ic_launcher).resize(480,480).onlyScaleDown().into(binding.avatar);
+                                }
                             }
                             else {
                                 Message message = new Gson().fromJson(response.errorBody().charStream(), Message.class);

@@ -32,7 +32,7 @@
                 android:layout_height="match_parent"
                 android:paddingTop="10dp"
                 android:paddingEnd="55dp"
-                android:text="Job Details"
+                android:text="Company Details"
                 android:textAlignment="center"
                 android:textColor="#8f9490"
                 android:textSize="25sp"
@@ -80,7 +80,9 @@
                 android:background="@drawable/custom_edit_text"
                 android:layout_margin="10dp"
                 android:padding="10dp"
+                android:maxLines="1"
                 android:lines="1"
+                android:singleLine="true"
                 />
             <TextView
                 android:layout_width="match_parent"
@@ -97,7 +99,9 @@
                 android:background="@drawable/custom_edit_text"
                 android:layout_margin="10dp"
                 android:padding="10dp"
+                android:maxLines="1"
                 android:lines="1"
+                android:singleLine="true"
                 />
             <TextView
 
@@ -115,7 +119,9 @@
                 android:background="@drawable/custom_edit_text"
                 android:layout_margin="10dp"
                 android:padding="10dp"
+                android:maxLines="1"
                 android:lines="1"
+                android:singleLine="true"
                 />
             <TextView
 
@@ -133,6 +139,7 @@
                 android:background="@drawable/custom_edit_text"
                 android:layout_margin="10dp"
                 android:padding="10dp"
+                android:textAlignment="viewStart"
                 />
 
             <RelativeLayout

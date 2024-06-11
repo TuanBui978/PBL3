@@ -4,8 +4,10 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.myapplication.R;
@@ -116,6 +118,15 @@ public class JobEditActivity extends AppCompatActivity {
 
         else {
             setCompanySpinner();
+            binding.sourcePicture.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+                @Override
+                public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
+                    if (textView.getText() != "") {
+                        Picasso.get().load(textView.getText().toString()).resize(480,480).onlyScaleDown().into(binding.avatar);
+                    }
+                    return true;
+                }
+            });
             binding.okBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {

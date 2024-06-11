@@ -397,7 +397,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if (currentPage != USER_PAGE) {
-                    replaceFragment(new UserInfoFragment().newInstance(getIntent().getExtras().getBundle("UserBundle").getString("currentUserLogin")));
+                    String jsonUser = new Gson().toJson(userLogin);
+                    replaceFragment(new UserInfoFragment().newInstance(jsonUser));
                     currentPage = USER_PAGE;
                     getOnBackPressedDispatcher().onBackPressed();
                 }
@@ -467,5 +468,24 @@ public class MainActivity extends AppCompatActivity {
         if (this.currentPage == ADMIN_JOB) {
             replaceFragment(new AdminJobFragment());
         }
+    }
+
+    public void userUpdate() {
+        ApiService.apiService.getUserById(userLogin.getId()).enqueue(new Callback<User>() {
+            @Override
+            public void onResponse(Call<User> call, Response<User> response) {
+                if (response.isSuccessful()) {
+                    userLogin = response.body();
+                    if (!Objects.equals(userLogin.getAvatar_scr(), "")) {
+                        Picasso.get().load(userLogin.getAvatar_scr()).placeholder(R.drawable.load_animation).error(R.mipmap.ic_launcher).into(headerNavBinding.avatar);
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<User> call, Throwable throwable) {
+                Toast.makeText(mainBinding.getRoot().getContext(), "Fails on call API", Toast.LENGTH_LONG).show();
+            }
+        });
     }
 }

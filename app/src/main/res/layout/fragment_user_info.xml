@@ -45,12 +45,16 @@
                     android:layout_width="match_parent"
                     android:layout_height="40dp"
                     android:layout_marginTop="5dp"
+                    android:maxLines="1"
                     android:lines="1"
+                    android:singleLine="true"
                     android:background="@drawable/custom_edit_text"
                     android:enabled="false"
                     android:fontFamily="@font/roboto_regular"
                     android:padding="5dp"
-                    android:textSize="18sp" />
+                    android:textSize="18sp"
+                    android:inputType="text"
+                    />
 
                 <TextView
                     android:layout_width="match_parent"
@@ -70,11 +74,11 @@
                     <Spinner
                         android:id="@+id/select_gender"
                         android:layout_width="match_parent"
-                        android:layout_height="45dp"
+                        android:layout_height="wrap_content"
                         android:enabled="false"
                         android:fontFamily="@font/roboto_regular"
                         android:textSize="18sp"
-                        android:padding="5dp"/>
+                       />
                 </RelativeLayout>
 
                 <TextView
@@ -87,11 +91,14 @@
                     android:textStyle="bold" />
 
                 <EditText
+                    android:inputType="text"
                     android:id="@+id/select_date"
                     android:layout_width="match_parent"
                     android:layout_height="40dp"
                     android:layout_marginTop="5dp"
+                    android:maxLines="1"
                     android:lines="1"
+                    android:singleLine="true"
                     android:background="@drawable/custom_edit_text"
                     android:clickable="false"
                     android:enabled="false"
@@ -125,8 +132,11 @@
                         android:enabled="false"
                         android:fontFamily="@font/roboto_regular"
                         android:padding="5dp"
+                        android:maxLines="1"
                         android:lines="1"
-                        android:textSize="18sp" />
+                        android:singleLine="true"
+                        android:textSize="18sp"
+                        android:inputType="text"/>
 
                     <de.hdodenhof.circleimageview.CircleImageView
                         android:id="@+id/avatar"
@@ -157,7 +167,8 @@
                     android:enabled="false"
                     android:fontFamily="@font/roboto_regular"
                     android:padding="5dp"
-                    android:textSize="18sp" />
+                    android:textSize="18sp"
+                    />
 
                 <RelativeLayout
                     android:layout_width="match_parent"
