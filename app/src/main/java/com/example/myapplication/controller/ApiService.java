@@ -34,7 +34,7 @@ import retrofit2.http.Query;
 
 public interface ApiService{
 
-    String url = "http://192.168.1.3:3000";
+    String url = "http://192.168.1.8:3000";
 
     Gson gson = new Gson().newBuilder().setLenient().create();
     Retrofit retrofit = new Retrofit.Builder().baseUrl(url).addConverterFactory(GsonConverterFactory.create(gson)).build();

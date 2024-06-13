@@ -35,7 +35,14 @@ public class UserInfoActivity extends AppCompatActivity {
         if (getIntent().getStringExtra(STR_PARAM) != null) {
             user = new Gson().fromJson(getIntent().getStringExtra(STR_PARAM), User.class);
         }
+
         binding = ActivityUserInfoBinding.inflate(getLayoutInflater());
+        binding.backBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                getOnBackPressedDispatcher().onBackPressed();
+            }
+        });
         binding.nameEt.setText( user.getName());
         binding.emailEt.setText(user.getEmail());
         binding.selectDate.setText(user.getDate_of_birth().substring(0,10));

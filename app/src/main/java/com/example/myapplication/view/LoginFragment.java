@@ -17,6 +17,8 @@ import com.example.myapplication.models.PostUser;
 import com.example.myapplication.models.User;
 import com.google.gson.Gson;
 
+import java.util.Objects;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -60,6 +62,7 @@ public class LoginFragment extends Fragment {
                             intent.putExtra("UserBundle", bundle);
                             loginFragmentBinding.emailEt.setText("");
                             loginFragmentBinding.passwordEt.setText("");
+                            JobInfoActivity.isAdminUse = Objects.equals(user.getPrivilege_id(), "1");
                             startActivity(intent);
                         }
                     }

@@ -108,12 +108,12 @@
                         <Spinner
                             android:id="@+id/select_gender"
                             android:layout_width="match_parent"
-                            android:layout_height="45dp"
+                            android:layout_height="wrap_content"
                             android:enabled="false"
                             android:fontFamily="@font/roboto_regular"
                             android:textSize="18sp"
                             android:lines="1"
-                            android:padding="5dp"/>
+                            />
                     </RelativeLayout>
 
                     <TextView

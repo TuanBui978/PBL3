@@ -66,7 +66,9 @@ public class JobEditActivity extends AppCompatActivity {
                 binding.ageRequirement.setText(job.getAgeRequirement());
                 binding.industry.setText(job.getIndustry());
                 binding.sourcePicture.setText(job.getSourcePicture());
-                Picasso.get().load(job.getSourcePicture()).resize(480, 480).onlyScaleDown().into(binding.avatar);
+                if (!Objects.equals(job.getSourcePicture(), "")) {
+                    Picasso.get().load(job.getSourcePicture()).resize(480, 480).onlyScaleDown().into(binding.avatar);
+                }
                 setCompanySpinner();
                 binding.okBtn.setOnClickListener(new View.OnClickListener() {
                     @Override

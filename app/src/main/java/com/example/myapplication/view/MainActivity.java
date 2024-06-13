@@ -68,9 +68,7 @@ public class MainActivity extends AppCompatActivity {
 
         this.userLogin = new Gson().fromJson(getIntent().getExtras().getBundle("UserBundle").getString("currentUserLogin"), User.class);
 
-        if (Objects.equals(userLogin.getPrivilege_id(), "1")) {
-            JobInfoActivity.isAdminUse = true;
-        }
+
 
         mainBinding.menuBtn.setOnClickListener(new View.OnClickListener() {
             @Override
